@@ -34,6 +34,12 @@ function generateBotReply(userMessage) {
     return "Ahoj! Jak se máš?";
   } else if (userMessage.toLowerCase().includes("jak se máš")) {
     return "Jsem jen kód, ale děkuji za optání!";
+  } else if (userMessage.toLowerCase().includes("co děláš")) {
+    return "Pracuji na zpracování tvých zpráv!";
+  } else if (userMessage.toLowerCase().includes("mohl bys mi pomoc")) {
+    return "Samozřejmě, co potřebuješ?";
+  } else if (userMessage.toLowerCase().includes("děkuji")) {
+    return "Není zač!";
   } else {
     return "Zajímavé! Můžeš mi říct víc?";
   }

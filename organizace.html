@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizace školního roku</title>
+    <link rel="stylesheet" href="organizace.css">
+</head>
+<body>
+    <h1 class="h1">Organizace školního roku</h1>
+        <div class="lista">
+        <div>
+                <button type="button" data-href="." class="lista5">Home</button>
+                <button type="button" data-href="rozvrh.html" class="lista3">Rozvrh školy</button>
+                <button type="button" data-href="." class="lista2">Web školy</button>
+                <button type="button" data-href="organizace.html" class="lista3">Organizace školního roku</button>
+                <button type="button" data-href="chat.html" class="lista4">Chat</button>
+        </div>
+    </div>
+
+
+    <script>
+    document.querySelectorAll('.lista button').forEach(button => {
+      button.addEventListener('click', () => {
+        const target = button.getAttribute('data-href');
+        if (target) {
+          window.location.href = target;
+        }
+      });
+    });
+</script>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col about">
+                <h4>O webu</h4>
+                <p>Tento třídní web sdílí důležité odkazy, rozvrh a informace pro žáky a rodiče.</p>
+            </div>
+
+            <div class="footer-col links">
+                <h4>Užitečné odkazy</h4>
+                <ul>
+                    <li><a href="index.html">Domů</a></li>
+                    <li><a href="rozvrh.html">Rozvrh</a></li>
+                    <li><a href="#">Web školy</a></li>
+                    <li><a href="#">Kontakt</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col contact">
+                <h4>Kontakt</h4>
+                <p>Telefon: <a href="tel:+420123456789">+420 123 456 789</a></p>
+                <p>Email: <a href="mailto:info@skola.cz">info@skola.cz</a></p>
+            </div>
+
+            <div class="footer-col social">
+                <h4>Sledujte nás</h4>
+                <p class="social-links">
+                    <a href="#">Twitter</a> • <a href="#">Facebook</a> • <a href="#">Instagram</a> 
+                </p>
+            </div>
+        </div>
+
+        
+        <div class="footer-bottom">
+            <p>© 2025 s láskou Adam & Patrik</p>
+            <p><a class="back-top" href="#top">↑ Na začátek</a></p>
+        </div>
+    </footer>
+    
+</body>
+</html>
