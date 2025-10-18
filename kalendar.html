@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="kalendar.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>Kalendář třídy</title>
+</head>
+<body>
+
+  <h1 class="title">Kalendář třídy</h1>
+
+<div class="lista">
+        <div>
+                <button type="button" data-href="index.html" class="lista5">Home</button>
+                <button type="button" data-href="rozvrh.html" class="lista3">Rozvrh školy</button>
+                <button type="button" data-href="." class="lista2">Web školy</button>
+                <button type="button" data-href="organizace.html" class="lista3">Organizace školního roku</button>
+                <button type="button" data-href="kalendar.html" class="lista3">Kalendář třídy</button>
+                <button type="button" data-href="chat.html" class="lista4">Chat</button>
+        </div>
+</div>
+
+<script>
+    document.querySelectorAll('.lista button').forEach(button => {
+      button.addEventListener('click', () => {
+        const target = button.getAttribute('data-href');
+        if (target) {
+          window.location.href = target;
+        }
+      });
+    });
+</script>
+
+
+
+<div class="main_text">
+    <h2 id="month-title">Říjen 2025</h2>
+    <div style="margin-bottom: 10px;" class="button-container">
+        <button onclick="changeMonth(-1)" class="predchozi">← Předchozí</button>
+        <button onclick="changeMonth(1)" class="dalsi">Další →</button>
+</div>
+    <table class="calendar">
+        <thead>
+            <tr>
+                <th>Po</th><th>Út</th><th>St</th><th>Čt</th><th>Pá</th><th>So</th><th>Ne</th>
+            </tr>
+        </thead>
+    <tbody id="calendar-body">
+      <!-- Kalendář se vygeneruje pomocí JS -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const calendarBody = document.getElementById('calendar-body');
+  const monthTitle = document.getElementById('month-title');
+  const monthNames = ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'];
+  let currentMonth = 9; // Říjen
+  let currentYear = 2025;
+
+  function generateCalendar(month, year) {
+    calendarBody.innerHTML = '';
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const startDay = (firstDay + 6) % 7;
+
+    monthTitle.innerText = `${monthNames[month]} ${year}`;
+    let day = 1;
+
+    for (let i = 0; i < 6; i++) {
+      const row = document.createElement('tr');
+      for (let j = 0; j < 7; j++) {
+        const cell = document.createElement('td');
+        if (i === 0 && j < startDay) {
+          cell.innerHTML = '';
+        } else if (day <= daysInMonth) {
+          const key = `${year}-${month}-${day}`;
+          const savedEvent = localStorage.getItem(key) || '';
+          cell.innerHTML = `
+            <div class="day-number">${day}</div>
+            <div class="event">${savedEvent}</div>
+          `;
+          cell.classList.add('day-cell');
+
+          cell.addEventListener('click', () => {
+            const currentText = cell.querySelector('.event').innerText;
+            const action = currentText
+              ? confirm("Chceš tuto událost smazat?")
+                ? 'delete'
+                : null
+              : prompt(`Zadej událost pro ${day}. ${monthNames[month]}:`);
+
+            if (action === 'delete') {
+              localStorage.removeItem(key);
+              cell.querySelector('.event').innerText = '';
+            } else if (typeof action === 'string' && action.trim() !== '') {
+              localStorage.setItem(key, action);
+              cell.querySelector('.event').innerText = action;
+            }
+          });
+
+          day++;
+        }
+        row.appendChild(cell);
+      }
+      calendarBody.appendChild(row);
+    }
+  }
+
+  function changeMonth(offset) {
+    currentMonth += offset;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    } else if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+    generateCalendar(currentMonth, currentYear);
+  }
+
+  generateCalendar(currentMonth, currentYear);
+</script>
+
+
+
+
+</body>
+</html>

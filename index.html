@@ -12,14 +12,16 @@
         <h1 class="title">Třídní web</h1>
     <div class="lista">
         <div>
-                <button type="button" data-href="." class="lista5">Home</button>
+                <button type="button" data-href="index.html" class="lista5">Home</button>
                 <button type="button" data-href="rozvrh.html" class="lista3">Rozvrh školy</button>
                 <button type="button" data-href="." class="lista2">Web školy</button>
                 <button type="button" data-href="organizace.html" class="lista3">Organizace školního roku</button>
+                <button type="button" data-href="kalendar.html" class="lista3">Kalendář třídy</button>
                 <button type="button" data-href="chat.html" class="lista4">Chat</button>
         </div>
 
         <div>
+            <button id="toggle-theme" class="lista3">Přepnout režim</button>
             <button type="button" data-href="error469.html" id="discordlogin" class="lista3">Discord Login</button>
         </div>  
     </div>
@@ -32,21 +34,27 @@
 
 <div class="flex_container">
     <div class="sec_text">
-        <h2>Info o třídě</h2>
-        <p>Třída 5.A je složena z 25 žáků a žákyň. Naším cílem je vytvořit příjemné a podporující prostředí pro všechny.</p>
+        <h2>💻 Kdo jsme</h2>
+        <p>Jsme 1. ročník SSAKHK – parta lidí, co se nebojí ponořit do světa IT, grafiky a kybernetiky. Učíme se nejen programovat, ale i přemýšlet jinak. Každý z nás je originál, ale dohromady tvoříme tým, co má drive.</p>¨
+        <img src="T1foto.png" alt="" class="pngfoto">
     </div>
 
     <div class="thr_text">
-        <h2>Info o třídě</h2>
-        <p>Třída 5.A je složena z 25 žáků a žákyň. Naším cílem je vytvořit příjemné a podporující prostředí pro všechny.</p>
+        <h2>🧠 Co nás čeká</h2>
+        <p>První rok je o objevování – poznáváme školu, učitele, nové spolužáky i technologie. Čekají nás projekty, výjezdy, soutěže a možná i první hackathon. Sleduj web, ať ti nic neuteče.</p>
+        <img src="T1foto2.png" alt="" class="pngfoto2">
     </div>
 
     <div class="for_text">
-        <h2>Info o třídě</h2>
-        <p>Třída 5.A je složena z 25 žáků a žákyň. Naším cílem je vytvořit příjemné a podporující prostředí pro všechny.</p>
+        <h2>📡 Jak komunikujeme</h2>
+        <p>Fungujeme online i offline. Discord je naše hlavní spojka – tam řešíme úkoly, memy i život. Web slouží jako rozcestník pro důležité info, rozvrhy a odkazy. A když je nejhůř, vždycky se najde někdo, kdo poradí.</p>
+        <img src="DisT1.png" alt="" class="pngfoto3">
     </div>
 </div>
 
+<div class="down_text">
+    <h2>📚 Co se naučíme</h2>
+</div>
     
     <!-- Footer -->
     <footer class="site-footer">
@@ -61,15 +69,14 @@
                 <ul>
                     <li><a href="index.html">Domů</a></li>
                     <li><a href="rozvrh.html">Rozvrh</a></li>
-                    <li><a href="#">Web školy</a></li>
-                    <li><a href="#">Kontakt</a></li>
+                    <li><a href="kyberna.cz">Web školy</a></li>
                 </ul>
             </div>
 
             <div class="footer-col contact">
                 <h4>Kontakt</h4>
-                <p>Telefon: <a href="tel:+420123456789">+420 123 456 789</a></p>
-                <p>Email: <a href="mailto:info@skola.cz">info@skola.cz</a></p>
+                <p>Telefon: <a href="#">+420 605 741 731</a></p>
+                <p>Email: <a href="#">info@skola.cz</a></p>
             </div>
 
             <div class="footer-col social">
@@ -86,18 +93,28 @@
             <p><a class="back-top" href="#top">↑ Na začátek</a></p>
         </div>
     </footer>
+                <button type="button" data-href="index.html" class="lista5">Home</button>
+                <button type="button" data-href="rozvrh.html" class="lista3">Rozvrh školy</button>
+                <button type="button" data-href="." class="lista2">Web školy</button>
+                <button type="button" data-href="organizace.html" class="lista3">Organizace školního roku</button>
+                <button type="button" data-href="kalendar.html" class="lista3">Kalendář třídy</button>
+                <button type="button" data-href="chat.html" class="lista4">Chat</button>
+        </div>
+
         <script>
-            // Attach click handlers to .lista buttons to navigate using data-href
-            document.addEventListener('DOMContentLoaded', function () {
-                document.querySelectorAll('.lista button[data-href]').forEach(function (btn) {
-                    btn.addEventListener('click', function () {
-                        var target = btn.getAttribute('data-href');
-                        if (!target) return;
-                        // open same tab
-                        window.location.href = target;
-                    });
-                });
+            const toggleButton = document.getElementById('toggle-theme');
+            const currentTheme = localStorage.getItem('theme');
+
+            if (currentTheme === 'light') {
+                document.body.classList.add('light-theme');
+            }
+
+            toggleButton.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                const theme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+                localStorage.setItem('theme', theme);
             });
-        </script>
+         </script>
+
 </body>
 </html>

@@ -11,6 +11,18 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.info {
+    background-color: #2b2b2b;
+    color: #c6c8c8;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    max-width: calc(100% - 20px);
+    margin: 0 auto 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+}
+
 .lista {
     /* nav container */
     display: flex;
