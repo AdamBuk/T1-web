@@ -22,17 +22,6 @@
         </div>
 </div>
 
-<script>
-    document.querySelectorAll('.lista button').forEach(button => {
-      button.addEventListener('click', () => {
-        const target = button.getAttribute('data-href');
-        if (target) {
-          window.location.href = target;
-        }
-      });
-    });
-</script>
-
 
 
 <div class="main_text">
@@ -124,7 +113,16 @@
   generateCalendar(currentMonth, currentYear);
 </script>
 
-
+<script>
+    document.querySelectorAll('.lista button').forEach(button => {
+      button.addEventListener('click', () => {
+        const target = button.getAttribute('data-href');
+        if (target) {
+          window.location.href = target;
+        }
+      });
+    });
+</script>
 
 
 </body>

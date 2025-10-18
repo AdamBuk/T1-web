@@ -20,16 +20,7 @@
                 <button type="button" data-href="chat.html" class="lista4">Chat</button>
         </div>
 
-        <script>
-    document.querySelectorAll('.lista button').forEach(button => {
-      button.addEventListener('click', () => {
-        const target = button.getAttribute('data-href');
-        if (target) {
-          window.location.href = target;
-        }
-      });
-    });
-</script>
+
 
         <div>
             <button id="toggle-theme" class="lista3">Přepnout režim</button>
@@ -105,6 +96,16 @@
         </div>
     </footer>
 
+        <script>
+        document.querySelectorAll('.lista button').forEach(button => {
+        button.addEventListener('click', () => {
+            const target = button.getAttribute('data-href');
+            if (target) {
+            window.location.href = target;
+            }
+        });
+        });
+    </script>
 
         <script>
             const toggleButton = document.getElementById('toggle-theme');
