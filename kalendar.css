@@ -3,15 +3,18 @@ body {
   color: #f0f0f0;
   font-family: Arial, sans-serif;
   padding: 20px;
+
 }
 
 .title {
     background: linear-gradient(to right, #ff0000, #000000);
-    padding: 50px;
+    padding: 50px 20px 49px 20px;
     text-align: center;
     color: white;
-    margin: -28px -28px 20px;
+    margin: -20px auto 20px auto;
+    max-width: 100%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
 }
 
 .main_text {
@@ -35,6 +38,11 @@ body {
     padding: 12px 38.2px;
     right: 30px; 
     position: relative;
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    right: auto;
+
     box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
 }
 
@@ -194,7 +202,7 @@ body {
 
 .calendar th, .calendar td {
   border: 1px solid #444;
-  width: 14.28%;
+  width: 14.27%;
   height: 100px;
   vertical-align: top;
   padding: 5px;
