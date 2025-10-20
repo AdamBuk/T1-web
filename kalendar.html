@@ -1,103 +1,157 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="kalendar.css">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <title>Kalendář třídy</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="kalendar.css" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <title>Kalendář třídy</title>
+  <style>
+    td {
+      width: 100px;
+      height: 80px;
+      vertical-align: top;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      padding: 5px;
+    }
+    .day-number {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .event {
+      background: #f0f8ff;
+      margin: 2px 0;
+      padding: 2px 4px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+    .event:hover {
+      background: #e0e0ff;
+    }
+  </style>
 </head>
 <body>
 
-  <h1 class="title">Kalendář třídy</h1>
+<h1 class="title">Kalendář třídy</h1>
 
 <div class="lista">
-        <div>
-                <button type="button" data-href="index.html" class="lista5">Home</button>
-                <button type="button" data-href="rozvrh.html" class="lista3">Rozvrh školy</button>
-                <button type="button" data-href="." class="lista2">Web školy</button>
-                <button type="button" data-href="organizace.html" class="lista3">Organizace školního roku</button>
-                <button type="button" data-href="kalendar.html" class="lista3">Kalendář třídy</button>
-                <button type="button" data-href="chat.html" class="lista4">Chat</button>
-        </div>
+  <div>
+    <button type="button" data-href="index.html" class="lista5">Home</button>
+    <button type="button" data-href="rozvrh.html" class="lista3">Rozvrh školy</button>
+    <button type="button" data-href="." class="lista2">Web školy</button>
+    <button type="button" data-href="organizace.html" class="lista3">Organizace školního roku</button>
+    <button type="button" data-href="kalendar.html" class="lista3">Kalendář třídy</button>
+    <button type="button" data-href="chat.html" class="lista4">Chat</button>
+  </div>
 </div>
-
-
 
 <div class="main_text">
-    <h2 id="month-title">Říjen 2025</h2>
-    <div style="margin-bottom: 10px;" class="button-container">
-        <button onclick="changeMonth(-1)" class="predchozi">← Předchozí</button>
-        <button onclick="changeMonth(1)" class="dalsi">Další →</button>
-</div>
-    <table class="calendar">
-        <thead>
-            <tr>
-                <th>Po</th><th>Út</th><th>St</th><th>Čt</th><th>Pá</th><th>So</th><th>Ne</th>
-            </tr>
-        </thead>
-    <tbody id="calendar-body">
-      <!-- Kalendář se vygeneruje pomocí JS -->
-    </tbody>
+  <h2 id="month-title">Říjen 2025</h2>
+  <div style="margin-bottom: 10px;" class="button-container">
+    <button onclick="changeMonth(-1)" class="predchozi">← Předchozí</button>
+    <button onclick="changeMonth(1)" class="dalsi">Další →</button>
+  </div>
+
+  <table class="calendar">
+    <thead>
+      <tr>
+        <th>Po</th><th>Út</th><th>St</th><th>Čt</th><th>Pá</th><th>So</th><th>Ne</th>
+      </tr>
+    </thead>
+    <tbody id="calendar-body"></tbody>
   </table>
 </div>
 
 <script>
-  const calendarBody = document.getElementById('calendar-body');
-  const monthTitle = document.getElementById('month-title');
-  const monthNames = ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'];
-  let currentMonth = 9; // Říjen
-  let currentYear = 2025;
+  const calendarBody = document.getElementById("calendar-body");
+  const monthTitle = document.getElementById("month-title");
+  const monthNames = [
+    "Leden","Únor","Březen","Duben","Květen","Červen",
+    "Červenec","Srpen","Září","Říjen","Listopad","Prosinec"
+  ];
+  let currentMonth = new Date().getMonth();
+  let currentYear = new Date().getFullYear();
 
-  function generateCalendar(month, year) {
-    calendarBody.innerHTML = '';
-    const firstDay = new Date(year, month, 1).getDay();
+  // --- Načtení událostí ---
+  async function fetchEvents(month, year) {
+    const res = await fetch(`api.php?action=get&month=${month}&year=${year}`);
+    return await res.json();
+  }
+
+  // --- Uložení nové události ---
+  async function saveEvent(date, text) {
+    const formData = new FormData();
+    formData.append("datum", date);
+    formData.append("text", text);
+    await fetch("api.php?action=save", { method: "POST", body: formData });
+  }
+
+  // --- Smazání události ---
+  async function deleteEvent(id) {
+    await fetch(`api.php?action=delete&id=${id}`);
+  }
+
+  // --- Generování kalendáře ---
+  async function generateCalendar(month, year) {
+    calendarBody.innerHTML = "";
+
+    const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // pondělí = 0
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const startDay = (firstDay + 6) % 7;
+    const events = await fetchEvents(month, year);
 
     monthTitle.innerText = `${monthNames[month]} ${year}`;
     let day = 1;
 
     for (let i = 0; i < 6; i++) {
-      const row = document.createElement('tr');
+      const row = document.createElement("tr");
+
       for (let j = 0; j < 7; j++) {
-        const cell = document.createElement('td');
-        if (i === 0 && j < startDay) {
-          cell.innerHTML = '';
+        const cell = document.createElement("td");
+
+        if (i === 0 && j < firstDay) {
+          cell.innerHTML = "";
         } else if (day <= daysInMonth) {
-          const key = `${year}-${month}-${day}`;
-          const savedEvent = localStorage.getItem(key) || '';
-          cell.innerHTML = `
-            <div class="day-number">${day}</div>
-            <div class="event">${savedEvent}</div>
-          `;
-          cell.classList.add('day-cell');
+          const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+          cell.innerHTML = `<div class="day-number">${day}</div>`;
+          const dayEvents = events[dateKey] || [];
 
-          cell.addEventListener('click', () => {
-            const currentText = cell.querySelector('.event').innerText;
-            const action = currentText
-              ? confirm("Chceš tuto událost smazat?")
-                ? 'delete'
-                : null
-              : prompt(`Zadej událost pro ${day}. ${monthNames[month]}:`);
+          dayEvents.forEach(ev => {
+            const div = document.createElement("div");
+            div.classList.add("event");
+            div.innerText = ev.text;
+            div.title = "Klikni pro smazání";
+            div.addEventListener("click", async (e) => {
+              e.stopPropagation();
+              if (confirm("Opravdu smazat tuto událost?")) {
+                await deleteEvent(ev.id);
+                generateCalendar(currentMonth, currentYear);
+              }
+            });
+            cell.appendChild(div);
+          });
 
-            if (action === 'delete') {
-              localStorage.removeItem(key);
-              cell.querySelector('.event').innerText = '';
-            } else if (typeof action === 'string' && action.trim() !== '') {
-              localStorage.setItem(key, action);
-              cell.querySelector('.event').innerText = action;
+          // Kliknutí na den = přidání nové události
+          cell.addEventListener("click", async () => {
+            const newEvent = prompt(`Zadej událost pro ${day}. ${monthNames[month]}:`);
+            if (newEvent && newEvent.trim() !== "") {
+              await saveEvent(dateKey, newEvent.trim());
+              generateCalendar(currentMonth, currentYear);
             }
           });
 
           day++;
         }
+
         row.appendChild(cell);
       }
+
       calendarBody.appendChild(row);
     }
   }
 
+  // --- Změna měsíce ---
   function changeMonth(offset) {
     currentMonth += offset;
     if (currentMonth < 0) {
@@ -110,20 +164,18 @@
     generateCalendar(currentMonth, currentYear);
   }
 
+  // --- Načtení při startu ---
   generateCalendar(currentMonth, currentYear);
 </script>
 
 <script>
-    document.querySelectorAll('.lista button').forEach(button => {
-      button.addEventListener('click', () => {
-        const target = button.getAttribute('data-href');
-        if (target) {
-          window.location.href = target;
-        }
-      });
+  document.querySelectorAll(".lista button").forEach(button => {
+    button.addEventListener("click", () => {
+      const target = button.getAttribute("data-href");
+      if (target) window.location.href = target;
     });
+  });
 </script>
-
 
 </body>
 </html>
