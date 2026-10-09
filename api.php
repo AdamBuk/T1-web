@@ -1,14 +1,17 @@
 <?php
-$servername = "camelot.vagonbrei.eu";
-$username = "u7719_ByY86exZDq";      // změň podle nastavení
-$password = "DE9D0C+i6r+f@FCJhyp0lxKK";          // změň podle nastavení
-$dbname = "s7719_NXRPDC";
+// Přístupové údaje k databázi jsou v config.php (mimo git) — vzor: config.example.php
+$config = require __DIR__ . '/config.php';
+$servername = $config['host'];
+$username = $config['user'];
+$password = $config['password'];
+$dbname = $config['database'];
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 $conn->set_charset("utf8mb4");
 
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    http_response_code(500);
+    die("Databáze je dočasně nedostupná.");
 }
 
 $action = $_GET['action'] ?? '';
